@@ -1,11 +1,13 @@
 const express = require("express");
+const cors = require("cors")
+
 const productsRoutes = require("./routes/productsRoutes");
 const usersRoutes = require("./routes/usersRoutes");
 const salesRoutes = require("./routes/salesRoutes");
 const db = require("./db");
-
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use(productsRoutes);
 app.use(usersRoutes);

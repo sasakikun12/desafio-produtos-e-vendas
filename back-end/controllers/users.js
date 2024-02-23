@@ -20,7 +20,7 @@ async function addUser(req, res) {
     const hashedPassword = await bcrypt.hash(password, 10);
     const token = jwt.sign({ username }, JWT_SECRET_KEY);
 
-    const user = await UserRepository.create({
+    await UserRepository.create({
       username,
       password: hashedPassword,
       token,
