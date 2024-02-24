@@ -6,6 +6,7 @@ const isActive = (props) => props.active === "true";
 const StyledButton = styled.button`
   background-color: ${(props) => (isActive(props) ? "#a0207a" : "#601349")};
   color: #fff;
+  font-size: calc(0.6rem + 0.2vw);
 
   &:hover {
     background-color: #a0207a;
@@ -16,8 +17,6 @@ const StyledButton = styled.button`
 const VerticalNav = styled.div`
   background-color: #fff;
   color: #fff;
-  height: 92vh;
-  width: 100%;
   border: 0;
   border-top: none;
 `;

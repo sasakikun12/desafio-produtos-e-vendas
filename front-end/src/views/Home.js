@@ -85,10 +85,10 @@ const Home = () => {
       <div className="container-fluid vh-100 d-flex flex-column">
         <Navbar className="flex-shrink-0" />
         <div className="row flex-grow-1 justify-content-between">
-          <div className="col-1 flex-fill border-end">
+          <div className="col-12 col-lg-1 flex-fill border-end">
             <VerticalNavbar setSelected={setSelected} />
           </div>
-          <StyledDiv className="col-11 flex-fill">
+          <StyledDiv className="col-12 col-lg-11 flex-fill">
             <div className="p-3">
               <h2>{isProduct() ? "Produtos" : "Vendas"}</h2>
             </div>
