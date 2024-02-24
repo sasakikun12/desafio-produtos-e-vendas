@@ -2,7 +2,8 @@ const SalesRepository = require("../models/salesModel");
 const ProductRepository = require("../models/productsModel");
 
 function findAllSales(req, res) {
-  SalesRepository.findAll().then((result) => res.json(result));
+  const { userId } = req.params;
+  SalesRepository.findAll({where : { userId }}).then((result) => res.json(result));
 }
 
 function findSale(req, res) {
@@ -27,7 +28,7 @@ async function addSale(req, res) {
 
       res.json(createdSale);
     } else {
-      res.status(500).json({
+      res.status(422).json({
         error: "Quantidade solicitada é maior do que o estoque disponível!",
       });
     }
@@ -67,7 +68,7 @@ async function updateSale(req, res) {
 
       res.json(updatedProduct);
     } else {
-      res.status(500).json({
+      res.status(422).json({
         error: "Quantidade solicitada é maior do que o estoque disponível!",
       });
     }
@@ -80,7 +81,7 @@ async function updateSale(req, res) {
 }
 
 async function deleteSale(req, res) {
-  const { id, userId } = req.params;
+  const { id } = req.params;
 
   try {
     const sale = await SalesRepository.findByPk(id);
@@ -94,7 +95,7 @@ async function deleteSale(req, res) {
 
     if (updateQuantitySuccess) {
       const deletedCount = await SalesRepository.destroy({
-        where: { id, userId },
+        where: { id },
       });
 
       if (deletedCount === 0) {

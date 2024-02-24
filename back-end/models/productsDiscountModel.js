@@ -18,7 +18,6 @@ module.exports = db.define("productDiscounts", {
       model: ProductRepository,
       key: "id",
     },
-    onUpdate: "CASCADE",
     onDelete: "CASCADE",
   },
 
@@ -29,7 +28,6 @@ module.exports = db.define("productDiscounts", {
       model: UserRepository,
       key: "id",
     },
-    onUpdate: "CASCADE",
     onDelete: "CASCADE",
   },
 

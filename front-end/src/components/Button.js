@@ -1,22 +1,44 @@
 import styled from "styled-components";
 
 const StyledButton = styled.button`
-  background-color: #601349;
-  color: #fff;
+  background-color: ${(props) => (colorSchemaByType(props).bg)};
+  color: ${(props) => (colorSchemaByType(props).color)};
 
   &:hover {
-    background-color: #963579;
-    color: #fff;
+    background-color: ${(props) => (colorSchemaByType(props).hover)};
+    color: ${(props) => (colorSchemaByType(props).color)};
   }
 `;
 
-const Button = ({ onClick, text }) => {
+const colorSchemaByType = (props) => {
+  switch(props.kind) {
+    case "danger":
+      return {
+        bg: "#ffd2cb",
+        hover: "#ffd2cb",
+        color: "#ff4a2d"
+      }
+    case "warning":
+      return {
+        bg: "#F5C69C",
+        hover: "#F5C69C",
+        color: "#cc6c18"
+      }
+    default:
+      return {
+        bg: "#601349",
+        hover: "#963579",
+        color: "#fff"
+      };
+  }
+}
+
+const Button = ({ onClick, text, css, kind }) => {
+  const combinedClassName = `btn ${css}`;
   return (
-    <div className="d-flex justify-content-center">
-      <StyledButton className="btn mt-4 btn-lg" onClick={onClick}>
-        {text}
-      </StyledButton>
-    </div>
+    <StyledButton className={combinedClassName} onClick={onClick} kind={kind}>
+      {text}
+    </StyledButton>
   );
 };
 

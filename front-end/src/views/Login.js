@@ -23,8 +23,11 @@ const Login = () => {
       password,
     })
       .then((response) => {
+        Cookies.set("token", response.data.token);
+        Cookies.set("username", response.data.username);
+        Cookies.set("userid", response.data.userId);
         setError(false);
-        Cookies.set("token", response.data);
+        window.location = "/";
       })
       .catch((error) => {
         setError(true);
@@ -35,12 +38,11 @@ const Login = () => {
   return (
     <div className="d-flex flex-row h-100 justify-content-between">
       <StyledLogin className="d-flex align-items-center container">
-        <img src={LoginImage} className="w-100"></img>
+        <img src={LoginImage} className="w-100 p-5"></img>
       </StyledLogin>
       <StyledLogin className="d-flex flex-column justify-content-around p-5">
         <div className="p-5 shadow mr-3 rounded">
           <h1>Gerencie seus produtos e vendas</h1>
-          <h2>Entrar</h2>
           <form>
             <Input
               text={"Usuário"}
@@ -65,8 +67,9 @@ const Login = () => {
                 Usuário ou senha inválidos!
               </div>
             )}
-
-            <Button onClick={handleSubmit} text={"Entrar"} />
+            <div className="d-flex justify-content-center">
+              <Button onClick={handleSubmit} text={"Entrar"} />
+            </div>
           </form>
         </div>
       </StyledLogin>

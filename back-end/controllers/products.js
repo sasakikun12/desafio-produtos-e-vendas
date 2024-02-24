@@ -3,12 +3,13 @@ const ProductRepository = require("../models/productsModel");
 const ProductUpdateRepository = require("../models/productsUpdateModel");
 const ProductDiscountRepository = require("../models/productsDiscountModel");
 
-const {
-  validateUrl,
-} = require("../utils/validations");
+const { validateUrl } = require("../utils/validations");
 
 function findAll(req, res) {
-  ProductRepository.findAll().then((result) => res.json(result));
+  const { userId } = req.params;
+  ProductRepository.findAll({ where: { userId } }).then((result) =>
+    res.json(result)
+  );
 }
 
 function findProduct(req, res) {
@@ -20,7 +21,7 @@ function addProduct(req, res) {
   const { name, description, value, quantity, type, userId } = req.body;
 
   if (type === "digital" && !validateUrl(req.body.link)) {
-    return res.status(404).json({ message: `Link inválido` });
+    return res.status(422).json({ message: `Link inválido` });
   }
 
   ProductRepository.create({
@@ -37,34 +38,35 @@ function addProduct(req, res) {
 }
 
 async function updateProduct(req, res) {
-  const { id, description, oldValue, newValue, quantity, type, userId } =
-    req.body;
+  const { id, description, value, quantity, type, userId } = req.body;
 
   try {
     if (type === "digital" && !validateUrl(req.body.link)) {
-      return res.status(404).json({ message: `Link inválido` });
+      return res.status(422).json({ message: `Link inválido` });
     }
 
-    if (oldValue !== newValue) {
+    const product = await ProductRepository.findByPk(id);
+
+    if (product.value !== parseFloat(value)) {
       await ProductUpdateRepository.create({
         productId: id,
         userId,
-        oldValue,
-        newValue,
+        oldValue: parseFloat(product.value),
+        newValue: parseFloat(value),
       });
     }
 
     await ProductRepository.update(
       {
         description,
-        value: newValue,
+        value,
         quantity,
         link: req.body.link,
       },
       {
         where: {
           id,
-          value: oldValue,
+          value: parseFloat(product.value),
         },
       }
     );
@@ -81,11 +83,19 @@ async function updateProduct(req, res) {
 }
 
 async function deleteProduct(req, res) {
-  const { id, userId } = req.params;
+  const { id } = req.params;
 
   try {
+    await ProductDiscountRepository.destroy({
+      where: { productId: id },
+    });
+
+    await ProductUpdateRepository.destroy({
+      where: { productId: id },
+    });
+
     const deletedCount = await ProductRepository.destroy({
-      where: { id, userId },
+      where: { id },
     });
 
     if (deletedCount === 0) {
@@ -102,7 +112,8 @@ async function deleteProduct(req, res) {
 }
 
 async function addDiscount(req, res) {
-  const { productId, userId, value, startDate, endDate, startTime, endTime } = req.body;
+  const { productId, userId, value, startDate, endDate, startTime, endTime } =
+    req.body;
 
   try {
     const sales = await ProductDiscountRepository.findOne({
@@ -126,7 +137,7 @@ async function addDiscount(req, res) {
     });
 
     if (sales) {
-      return res.status(404).json({ message: "Data com conflito" });
+      return res.status(422).json({ message: "Data com conflito" });
     }
 
     const createdSale = await ProductDiscountRepository.create({
@@ -136,8 +147,8 @@ async function addDiscount(req, res) {
       startDate,
       endDate,
       startTime,
-      endTime
-    })
+      endTime,
+    });
 
     res.json(createdSale);
   } catch (error) {
@@ -155,7 +166,9 @@ function findDiscount(req, res) {
 
 function findAllDiscount(req, res) {
   const { userId } = req.params;
-  ProductDiscountRepository.findAll({ where: { userId }}).then((result) => res.json(result));
+  ProductDiscountRepository.findAll({ where: { userId } }).then((result) =>
+    res.json(result)
+  );
 }
 
 async function updateDiscount(req, res) {
@@ -168,7 +181,7 @@ async function updateDiscount(req, res) {
         startDate,
         endDate,
         startTime,
-        endTime
+        endTime,
       },
       {
         where: {
@@ -198,5 +211,5 @@ module.exports = {
   addDiscount,
   updateDiscount,
   findDiscount,
-  findAllDiscount
+  findAllDiscount,
 };

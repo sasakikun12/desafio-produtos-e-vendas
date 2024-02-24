@@ -4,11 +4,11 @@ const verifyToken = require('../middleware/jwtMiddleware');
 
 const productsRoutes = express.Router();
 
-productsRoutes.get("/products", verifyToken, products.findAll);
+productsRoutes.get("/products/all/:userId", verifyToken, products.findAll);
 productsRoutes.post("/products", verifyToken, products.addProduct);
 productsRoutes.get("/products/:id", verifyToken, products.findProduct);
 productsRoutes.put("/products", verifyToken, products.updateProduct);
-productsRoutes.delete("/products/:id/:userId", verifyToken, products.deleteProduct);
+productsRoutes.delete("/products/:id", verifyToken, products.deleteProduct);
 
 
 productsRoutes.get("/products/discount/:userId", verifyToken, products.findAllDiscount);

@@ -8,6 +8,7 @@ module.exports = db.define("product", {
     primaryKey: true,
     autoIncrement: true,
     allowNull: false,
+    onDelete: "CASCADE",
   },
 
   userId: {
@@ -17,7 +18,6 @@ module.exports = db.define("product", {
       model: UserRepository,
       key: "id",
     },
-    onUpdate: "CASCADE",
     onDelete: "CASCADE",
   },
 

@@ -20,15 +20,15 @@ async function addUser(req, res) {
     const hashedPassword = await bcrypt.hash(password, 10);
     const token = jwt.sign({ username }, JWT_SECRET_KEY);
 
-    await UserRepository.create({
+    const user = await UserRepository.create({
       username,
       password: hashedPassword,
       token,
     });
 
-    res.status(201).json({ message: "Usuário cadastrado com sucesso!" });
+    res.status(201).json({ message: "Usuário cadastrado com sucesso!", user });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(422).json({ error: error.message });
   }
 }
 
@@ -43,10 +43,10 @@ async function loginUser(req, res) {
 
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) {
-      return res.status(401).json({ message: "Senha inválida!" });
+      return res.status(404).json({ message: "Senha inválida!" });
     }
 
-    res.json(user.token);
+    res.json({token : user.token, username, userId: user.id});
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
   }

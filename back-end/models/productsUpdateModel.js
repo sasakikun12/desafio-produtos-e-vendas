@@ -18,7 +18,6 @@ module.exports = db.define("productUpdate", {
       model: ProductRepository,
       key: "id",
     },
-    onUpdate: "CASCADE",
     onDelete: "CASCADE",
   },
 
@@ -29,7 +28,6 @@ module.exports = db.define("productUpdate", {
       model: UserRepository,
       key: "id",
     },
-    onUpdate: "CASCADE",
     onDelete: "CASCADE",
   },
 
@@ -41,5 +39,5 @@ module.exports = db.define("productUpdate", {
   newValue: {
     type: DataTypes.FLOAT,
     allowNull: false,
-  }
+  },
 });
