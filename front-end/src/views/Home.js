@@ -129,7 +129,7 @@ const Home = () => {
                   <tbody>
                     {list &&
                       list.map((listItem, index) => (
-                        <tr key={index}>
+                        <tr key={index} className="align-middle">
                           <td>{listItem.id}</td>
                           <td>{listItem.value}</td>
                           {isProduct() ? (

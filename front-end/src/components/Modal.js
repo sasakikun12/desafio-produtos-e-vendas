@@ -173,8 +173,6 @@ const Modal = ({
     }
   }, [listItem]);
 
-  console.log(listItem);
-
   useEffect(() => {
     if (isSales()) {
       getAllProducts(token, userId)

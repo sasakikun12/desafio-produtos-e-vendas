@@ -172,9 +172,34 @@ function findAllDiscount(req, res) {
 }
 
 async function updateDiscount(req, res) {
-  const { id, value, startDate, endDate, startTime, endTime } = req.body;
+  const { id, productId, value, startDate, endDate, startTime, endTime } =
+    req.body;
 
   try {
+    const sales = await ProductDiscountRepository.findOne({
+      where: {
+        productId,
+        [Op.and]: [
+          {
+            [Op.and]: [
+              { startDate: { [Op.lte]: endDate } },
+              { endDate: { [Op.gte]: startDate } },
+            ],
+          },
+          {
+            [Op.and]: [
+              { startTime: { [Op.lt]: endTime } },
+              { endTime: { [Op.gt]: startTime } },
+            ],
+          },
+        ],
+      },
+    });
+
+    if (sales) {
+      return res.status(422).json({ message: "Data com conflito" });
+    }
+
     await ProductDiscountRepository.update(
       {
         value,
@@ -202,6 +227,29 @@ async function updateDiscount(req, res) {
   }
 }
 
+async function deleteDiscount(req, res) {
+  const { id } = req.params;
+
+  try {
+    const deletedCount = await ProductDiscountRepository.destroy({
+      where: { id },
+    });
+
+    if (deletedCount === 0) {
+      return res
+        .status(404)
+        .json({ message: `Desconto '${id}' não encontrado.` });
+    }
+
+    return res.status(200).json({ message: `Desconto deletado com sucesso.` });
+  } catch (error) {
+    console.error("Falha ao deletar o desconto:", error);
+    return res
+      .status(500)
+      .json({ error: "Falha ao deletar o desconto", message: error.message });
+  }
+}
+
 module.exports = {
   findAll,
   addProduct,
@@ -212,4 +260,5 @@ module.exports = {
   updateDiscount,
   findDiscount,
   findAllDiscount,
+  deleteDiscount,
 };
