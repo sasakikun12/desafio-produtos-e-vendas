@@ -1,5 +1,9 @@
 # Desafio produtos e vendas
 
+- [Tecnologias utilizadas](#tecnologias-utilizadas)
+- [Como rodar](#como-rodar)
+- [Funcionalidades implementadas](#funcionalidades-implementadas)
+
 ## Tecnologias utilizadas
 
 #### Front-end
