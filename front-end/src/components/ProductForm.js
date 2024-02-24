@@ -1,7 +1,6 @@
 import Input from "../components/Input";
 
 const ProductForm = ({ action, product, onProductChange }) => {
-  console.log(action);
   const isCreate = () => action === "create";
 
   return (

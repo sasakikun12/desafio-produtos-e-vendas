@@ -40,7 +40,7 @@ const Home = () => {
           setList(response.data);
         })
         .catch((error) => {
-          console.log("Error:", error);
+          toast.error(error.response.data.message);
         });
     } else {
       getAllSales(token, userid)
@@ -48,7 +48,7 @@ const Home = () => {
           setList(response.data);
         })
         .catch((error) => {
-          console.log("Error:", error);
+          toast.error(error.response.data.message);
         });
     }
   }, [token, selected]);
@@ -61,7 +61,7 @@ const Home = () => {
           setList(list.filter((obj) => obj.id !== id));
         })
         .catch((error) => {
-          console.log("Error:", error);
+          toast.error(error.response.data.message);
         });
     } else {
       removeSale(token, id)
@@ -70,7 +70,7 @@ const Home = () => {
           setList(list.filter((obj) => obj.id !== id));
         })
         .catch((error) => {
-          console.log("Error:", error);
+          toast.error(error.response.data.message);
         });
     }
   };

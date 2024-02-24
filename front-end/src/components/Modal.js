@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import Input from "../components/Input";
 import Button from "./Button";
 import { addProduct, editProduct, getAllProducts } from "../resources/products";
 import { toast } from "react-toastify";
@@ -81,7 +80,7 @@ const Modal = ({
             toast.success("Produto criado com sucesso!");
           })
           .catch((error) => {
-            console.log(error);
+            toast.error(error.response.data.message);
           });
       }
 
@@ -114,7 +113,7 @@ const Modal = ({
             toast.success("Produto editado com sucesso!");
           })
           .catch((error) => {
-            console.log(error);
+            toast.error(error.response.data.message);
           });
       }
     }
@@ -132,7 +131,7 @@ const Modal = ({
             setList((prev) => [...prev, data]);
           })
           .catch((error) => {
-            console.log(error);
+            toast.error(error.response.data.message);
           });
       }
 
@@ -157,7 +156,7 @@ const Modal = ({
             });
           })
           .catch((error) => {
-            console.log(error);
+            toast.error(error.response.data.message);
           });
       }
     }
@@ -184,7 +183,7 @@ const Modal = ({
           setProductsList(products);
         })
         .catch((error) => {
-          console.log("Error:", error);
+          toast.error(error.response.data.message);
         });
     }
   }, [token, selected]);

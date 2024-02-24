@@ -5,6 +5,7 @@ import SignupImage from "../assets/signup.svg";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import styled from "styled-components";
+import { toast } from "react-toastify";
 
 const StyledLogin = styled.div`
   height: 100vh;
@@ -31,7 +32,7 @@ const Signup = () => {
       })
       .catch((error) => {
         setError(true);
-        console.log("Error:", error);
+        toast.error(error.response.data.message);
       });
   };
 
