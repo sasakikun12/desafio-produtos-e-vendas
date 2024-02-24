@@ -5,6 +5,8 @@ import Button from "./Button";
 import { addProduct, editProduct, getAllProducts } from "../resources/products";
 import { toast } from "react-toastify";
 import { addSales, updateSale } from "../resources/sales";
+import ProductForm from "./ProductForm";
+import SaleForm from "./SaleForm";
 
 const RootModal = styled.div``;
 
@@ -209,115 +211,18 @@ const Modal = ({
 
           <ModalBody className="modal-body">
             {isProduct() ? (
-              <>
-                {isCreate() && (
-                  <Input
-                    text={"Nome"}
-                    type={"text"}
-                    id={"name"}
-                    value={product?.name || ""}
-                    onChange={onProductChange}
-                  />
-                )}
-                {isCreate() && (
-                  <>
-                    <label className="mb-2">Tipo de produto</label>
-                    <select
-                      name="type"
-                      value={product?.type || ""}
-                      onChange={onProductChange}
-                      className="form-select"
-                      aria-label="Selecione"
-                    >
-                      <option>Selecione</option>
-                      <option value="simples">Simples</option>
-                      <option value="digital">Digital</option>
-                    </select>
-                  </>
-                )}
-
-                <Input
-                  text={"Valor"}
-                  type={"number"}
-                  id={"value"}
-                  step={0.01}
-                  value={product?.value || ""}
-                  onChange={onProductChange}
-                />
-
-                <Input
-                  text={"Descrição"}
-                  type={"text"}
-                  id={"description"}
-                  value={product?.description || ""}
-                  onChange={onProductChange}
-                />
-
-                <Input
-                  text={"Quantidade"}
-                  type={"number"}
-                  id={"quantity"}
-                  max={listItem?.quantity}
-                  value={product?.quantity || ""}
-                  onChange={onProductChange}
-                />
-
-                <Input
-                  text={"Link"}
-                  type={"text"}
-                  id={"link"}
-                  value={product?.link || ""}
-                  onChange={onProductChange}
-                />
-              </>
+              <ProductForm
+                action={action}
+                product={product}
+                onProductChange={onProductChange}
+              />
             ) : (
-              <>
-                {isCreate() && (
-                  <>
-                    <label className="mb-2">Produto</label>
-                    <select
-                      name="productId"
-                      value={sale?.productId || ""}
-                      onChange={onSaleChange}
-                      className="form-select"
-                      aria-label="Selecione"
-                    >
-                      <option>Selecione</option>
-                      {productsList &&
-                        productsList.map((product, index) => (
-                          <option key={index} value={`${product.id}`}>
-                            {product.name}
-                          </option>
-                        ))}
-                    </select>
-                  </>
-                )}
-
-                <Input
-                  text={"Quantidade"}
-                  type={"number"}
-                  id={"quantity"}
-                  value={sale?.quantity || ""}
-                  onChange={onSaleChange}
-                />
-
-                <Input
-                  text={"Valor"}
-                  type={"number"}
-                  id={"value"}
-                  step={0.01}
-                  value={sale?.value || ""}
-                  onChange={onSaleChange}
-                />
-
-                <Input
-                  text={"Data"}
-                  type={"date"}
-                  id={"saleDate"}
-                  value={sale?.saleDate || ""}
-                  onChange={onSaleChange}
-                />
-              </>
+              <SaleForm
+                action={action}
+                productsList={productsList}
+                sale={sale}
+                onSaleChange={onSaleChange}
+              />
             )}
           </ModalBody>
 
