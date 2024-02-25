@@ -26,7 +26,7 @@ const VerticalNavbar = ({ setSelected }) => {
 
   const handleButtonClick = (buttonName) => {
     setActiveButton(buttonName);
-    buttonName === "products" ? setSelected("products") : setSelected("sales");
+    setSelected(buttonName);
   };
 
   return (
@@ -38,12 +38,21 @@ const VerticalNavbar = ({ setSelected }) => {
       >
         Produtos
       </StyledButton>
+
       <StyledButton
-        className={"btn my-2 w-100"}
+        className={"btn mt-2 w-100"}
         active={`${activeButton === "sales"}`}
         onClick={() => handleButtonClick("sales")}
       >
         Vendas
+      </StyledButton>
+
+      <StyledButton
+        className={"btn mt-2 w-100"}
+        active={`${activeButton === "discounts"}`}
+        onClick={() => handleButtonClick("discounts")}
+      >
+        Descontos
       </StyledButton>
     </VerticalNav>
   );

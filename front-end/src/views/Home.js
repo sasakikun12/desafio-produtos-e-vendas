@@ -1,7 +1,13 @@
 import Cookies from "js-cookie";
 import { useState, useEffect } from "react";
-import { getAllProducts, removeProduct } from "../resources/products";
-import { getAllSales, removeSale, updateSale } from "../resources/sales";
+import {
+  getAllProducts,
+  removeProduct,
+  getAllDiscounts,
+  removeDiscount,
+} from "../resources/products";
+import { getAllSales, removeSale } from "../resources/sales";
+
 import Button from "../components/Button";
 import VerticalNavbar from "../components/VerticalNav";
 import styled from "styled-components";
@@ -34,51 +40,78 @@ const Home = () => {
   };
 
   useEffect(() => {
-    if (selected === "products") {
-      getAllProducts(token, userid)
-        .then((response) => {
-          setList(response.data);
-        })
-        .catch((error) => {
-          toast.error(error.response.data.message);
-        });
-    } else {
-      getAllSales(token, userid)
-        .then((response) => {
-          setList(response.data);
-        })
-        .catch((error) => {
-          toast.error(error.response.data.message);
-        });
+    switch (selected) {
+      case "products":
+        getAllProducts(token, userid)
+          .then((response) => {
+            setList(response.data);
+          })
+          .catch((error) => {
+            toast.error(error.response.data.message);
+          });
+        break;
+      case "sales":
+        getAllSales(token, userid)
+          .then((response) => {
+            setList(response.data);
+          })
+          .catch((error) => {
+            toast.error(error.response.data.message);
+          });
+        break;
+      case "discounts":
+        getAllDiscounts(token, userid)
+          .then((response) => {
+            setList(response.data);
+          })
+          .catch((error) => {
+            toast.error(error.response.data.message);
+          });
+        break;
     }
   }, [token, selected]);
 
   const removeObj = ({ token, id }) => {
-    if (selected === "products") {
-      removeProduct(token, id)
-        .then(() => {
-          toast.success("Produto removido com sucesso!");
-          setList(list.filter((obj) => obj.id !== id));
-        })
-        .catch((error) => {
-          toast.error(error.response.data.message);
-        });
-    } else {
-      removeSale(token, id)
-        .then(() => {
-          toast.success("Venda removida com sucesso!");
-          setList(list.filter((obj) => obj.id !== id));
-        })
-        .catch((error) => {
-          toast.error(error.response.data.message);
-        });
+    switch (selected) {
+      case "products":
+        removeProduct(token, id)
+          .then(() => {
+            toast.success("Produto removido com sucesso!");
+            setList(list.filter((obj) => obj.id !== id));
+          })
+          .catch((error) => {
+            toast.error(error.response.data.message);
+          });
+        break;
+      case "sales":
+        removeSale(token, id)
+          .then(() => {
+            toast.success("Venda removida com sucesso!");
+            setList(list.filter((obj) => obj.id !== id));
+          })
+          .catch((error) => {
+            toast.error(error.response.data.message);
+          });
+        break;
+      case "discounts":
+        removeDiscount(token, id)
+          .then(() => {
+            toast.success("Desconto removido com sucesso!");
+            setList(list.filter((obj) => obj.id !== id));
+          })
+          .catch((error) => {
+            toast.error(error.response.data.message);
+          });
+        break;
     }
   };
 
   const selectedButtonLabel = () =>
-    isProduct() ? "Novo produto" : "Nova venda";
+    isProduct() ? "Novo produto" : isSale() ? "Nova venda" : "Novo Desconto";
 
   const isProduct = () => selected === "products";
+
+  const isSale = () => selected === "sales";
 
   return (
     <>
@@ -90,7 +123,9 @@ const Home = () => {
           </div>
           <StyledDiv className="col-12 col-lg-11 flex-fill">
             <div className="p-3">
-              <h2>{isProduct() ? "Produtos" : "Vendas"}</h2>
+              <h2>
+                {isProduct() ? "Produtos" : isSale() ? "Vendas" : "Descontos"}
+              </h2>
             </div>
             <StyledDivContainer className="container-fluid rounded">
               <div className="d-flex justify-content-end rounded">
@@ -114,13 +149,25 @@ const Home = () => {
                         <th scope="col">Editar</th>
                         <th scope="col">Remover</th>
                       </tr>
-                    ) : (
+                    ) : isSale() ? (
                       <tr>
                         <th scope="col">Id Venda</th>
                         <th scope="col">Valor</th>
                         <th scope="col">Id Produto</th>
                         <th scope="col">Quantidade</th>
                         <th scope="col">Data Venda</th>
+                        <th scope="col">Editar</th>
+                        <th scope="col">Remover</th>
+                      </tr>
+                    ) : (
+                      <tr>
+                        <th scope="col">Id Desconto</th>
+                        <th scope="col">Valor</th>
+                        <th scope="col">Id Produto</th>
+                        <th scope="col">Data Inicial</th>
+                        <th scope="col">Data Final</th>
+                        <th scope="col">Hora Inicial</th>
+                        <th scope="col">Hora Final</th>
                         <th scope="col">Editar</th>
                         <th scope="col">Remover</th>
                       </tr>
@@ -139,11 +186,19 @@ const Home = () => {
                               <td>{listItem.quantity}</td>
                               <td>{listItem.link}</td>
                             </>
-                          ) : (
+                          ) : isSale() ? (
                             <>
                               <td>{listItem.productId}</td>
                               <td>{listItem.quantity}</td>
                               <td>{listItem.saleDate}</td>
+                            </>
+                          ) : (
+                            <>
+                              <td>{listItem.productId}</td>
+                              <td>{listItem.startDate}</td>
+                              <td>{listItem.endDate}</td>
+                              <td>{listItem.startTime}</td>
+                              <td>{listItem.endTime}</td>
                             </>
                           )}
                           <td>

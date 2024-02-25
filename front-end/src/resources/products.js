@@ -16,4 +16,33 @@ const editProduct = (token, product) =>
     headers: { authorization: token },
   });
 
-export { getAllProducts, removeProduct, addProduct, editProduct };
+const addDiscount = (token, discount) =>
+  api.post("/products/discount", discount, {
+    headers: { authorization: token },
+  });
+
+const getAllDiscounts = (token, userId) =>
+  api.get(`/products/discount/all/${userId}`, {
+    headers: { authorization: token },
+  });
+
+const removeDiscount = (token, productId) =>
+  api.delete(`/products/discount/${productId}`, {
+    headers: { authorization: token },
+  });
+
+const editDiscount = (token, discount) =>
+  api.put("/products/discount", discount, {
+    headers: { authorization: token },
+  });
+
+export {
+  getAllProducts,
+  removeProduct,
+  addProduct,
+  editProduct,
+  addDiscount,
+  getAllDiscounts,
+  removeDiscount,
+  editDiscount,
+};

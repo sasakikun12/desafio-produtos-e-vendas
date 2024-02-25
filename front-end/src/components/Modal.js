@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Button from "./Button";
-import { addProduct, editProduct, getAllProducts } from "../resources/products";
+import {
+  addProduct,
+  editProduct,
+  getAllProducts,
+  addDiscount,
+  editDiscount,
+} from "../resources/products";
 import { toast } from "react-toastify";
 import { addSales, updateSale } from "../resources/sales";
 import ProductForm from "./ProductForm";
 import SaleForm from "./SaleForm";
+import DiscountForm from "./DiscountForm";
 
 const RootModal = styled.div``;
 
@@ -36,6 +43,8 @@ const Modal = ({
 }) => {
   const [sale, setSale] = useState(listItem || {});
   const [saleId, setSaleId] = useState("");
+  const [discount, setDiscount] = useState(listItem || {});
+  const [discountId, setDiscountId] = useState("");
   const [product, setProduct] = useState(listItem || {});
   const [productId, setProductId] = useState("");
   const [productsList, setProductsList] = useState([]);
@@ -43,9 +52,10 @@ const Modal = ({
   const isProduct = () => selected === "products";
   const isCreate = () => action === "create";
   const isEdit = () => action === "edit";
-  const isSales = () => selected === "sales";
-  const modalTypeLabel = () => (isProduct() ? "produto" : "venda");
-
+  const isSale = () => selected === "sales";
+  const isDiscount = () => selected === "discounts";
+  const modalTypeLabel = () =>
+    isProduct() ? "produto" : isSale() ? "venda" : "desconto";
   const onProductChange = (e) => {
     const { name, value } = e.target;
 
@@ -59,6 +69,15 @@ const Modal = ({
     const { name, value } = e.target;
 
     setSale((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const onDiscountChange = (e) => {
+    const { name, value } = e.target;
+
+    setDiscount((prev) => ({
       ...prev,
       [name]: value,
     }));
@@ -117,7 +136,7 @@ const Modal = ({
           });
       }
     }
-    if (isSales()) {
+    if (isSale()) {
       const saleObj = {
         ...sale,
         userId: userId,
@@ -160,23 +179,70 @@ const Modal = ({
           });
       }
     }
+    if (isDiscount()) {
+      const discountObj = {
+        ...discount,
+        userId: userId,
+      };
+      if (isCreate()) {
+        addDiscount(token, discountObj)
+          .then((response) => {
+            toggleModal({}, "");
+            toast.success("Desconto cadastrado com sucesso!");
+            const data = response.data;
+            setList((prev) => [...prev, data]);
+          })
+          .catch((error) => {
+            toast.error(error.response.data.message);
+          });
+      }
+
+      if (isEdit()) {
+        editDiscount(token, discountObj)
+          .then((response) => {
+            toggleModal({}, "");
+            toast.success("Desconto editado com sucesso!");
+            setList((prev) => {
+              return prev.map((obj) => {
+                if (obj.id === discountId) {
+                  return {
+                    ...obj,
+                    value: discount.value,
+                    startDate: discount.startDate,
+                    endDate: discount.endDate,
+                    startTime: discount.startTime,
+                    endTime: discount.endTime,
+                  };
+                } else {
+                  return obj;
+                }
+              });
+            });
+          })
+          .catch((error) => {
+            toast.error(error.response.data.message);
+          });
+      }
+    }
   };
 
   useEffect(() => {
     if (isProduct()) {
       setProduct(listItem || {});
       setProductId(listItem?.id);
-    } else {
+    } else if (isSale()) {
       setSale(listItem || {});
       setSaleId(listItem?.id);
+    } else {
+      setDiscount(listItem || {});
+      setDiscountId(listItem?.id);
     }
   }, [listItem]);
 
   useEffect(() => {
-    if (isSales()) {
+    if (isSale() || isDiscount()) {
       getAllProducts(token, userId)
         .then((response) => {
-          console.log(response.data);
           const products = response.data.filter(
             (product) => product.quantity > 0
           );
@@ -213,12 +279,19 @@ const Modal = ({
                 product={product}
                 onProductChange={onProductChange}
               />
-            ) : (
+            ) : isSale() ? (
               <SaleForm
                 action={action}
                 productsList={productsList}
                 sale={sale}
                 onSaleChange={onSaleChange}
+              />
+            ) : (
+              <DiscountForm
+                action={action}
+                productsList={productsList}
+                discount={discount}
+                onDiscountChange={onDiscountChange}
               />
             )}
           </ModalBody>
