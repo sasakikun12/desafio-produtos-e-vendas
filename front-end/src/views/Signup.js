@@ -24,9 +24,9 @@ const Signup = () => {
       password,
     })
       .then((response) => {
-        Cookies.set("token", response.data.token);
-        Cookies.set("username", response.data.username);
-        Cookies.set("userid", response.data.userId);
+        Cookies.set("token", response.data.user.token);
+        Cookies.set("username", response.data.user.username);
+        Cookies.set("userid", response.data.user.userId);
         setError(false);
         window.location = "/";
       })

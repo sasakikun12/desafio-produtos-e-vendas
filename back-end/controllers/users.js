@@ -19,14 +19,12 @@ async function addUser(req, res) {
     const { username, password } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
     const token = jwt.sign({ username }, JWT_SECRET_KEY);
-
     const user = await UserRepository.create({
       username,
       password: hashedPassword,
       token,
     });
-
-    res.status(201).json({ message: "Usuário cadastrado com sucesso!", user });
+    res.status(201).json({ message: "Usuário cadastrado com sucesso!", user: {token, username, userId: user.id} });
   } catch (error) {
     res.status(422).json({ error: error.message });
   }
