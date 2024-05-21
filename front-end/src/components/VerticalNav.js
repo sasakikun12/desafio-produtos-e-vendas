@@ -32,7 +32,7 @@ const VerticalNavbar = ({ setSelected }) => {
   return (
     <VerticalNav className="vertical-navbar">
       <StyledButton
-        className={"btn mt-5 w-100"}
+        className={"btn mt-5 w-100 d-flex justify-content-center"}
         active={`${activeButton === "products"}`}
         onClick={() => handleButtonClick("products")}
       >
@@ -40,7 +40,7 @@ const VerticalNavbar = ({ setSelected }) => {
       </StyledButton>
 
       <StyledButton
-        className={"btn mt-2 w-100"}
+        className={"btn mt-2 w-100 d-flex justify-content-center"}
         active={`${activeButton === "sales"}`}
         onClick={() => handleButtonClick("sales")}
       >
@@ -48,7 +48,7 @@ const VerticalNavbar = ({ setSelected }) => {
       </StyledButton>
 
       <StyledButton
-        className={"btn mt-2 w-100"}
+        className={"btn mt-2 w-100 d-flex justify-content-center"}
         active={`${activeButton === "discounts"}`}
         onClick={() => handleButtonClick("discounts")}
       >

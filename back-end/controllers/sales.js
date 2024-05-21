@@ -3,7 +3,9 @@ const ProductRepository = require("../models/productsModel");
 
 function findAllSales(req, res) {
   const { userId } = req.params;
-  SalesRepository.findAll({where : { userId }}).then((result) => res.json(result));
+  SalesRepository.findAll({ where: { userId } }).then((result) =>
+    res.json(result)
+  );
 }
 
 function findSale(req, res) {
@@ -29,7 +31,7 @@ async function addSale(req, res) {
       res.json(createdSale);
     } else {
       res.status(422).json({
-        error: "Quantidade solicitada é maior do que o estoque disponível!",
+        message: "Quantidade solicitada é maior do que o estoque disponível!",
       });
     }
   } catch (error) {
@@ -132,11 +134,9 @@ async function updateQuantity({ id, quantity, productId }) {
       await product.save();
       return true;
     } else {
-      console.log("Quantidade maior do que o estoque!");
       return false;
     }
   } catch (error) {
-    console.error("Falha ao atualizar a quantidade!", error);
     return false;
   }
 }

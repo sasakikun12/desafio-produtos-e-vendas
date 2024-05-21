@@ -10,13 +10,17 @@ productsRoutes.get("/products/:id", verifyToken, products.findProduct);
 productsRoutes.put("/products", verifyToken, products.updateProduct);
 productsRoutes.delete("/products/:id", verifyToken, products.deleteProduct);
 
+productsRoutes.post("/products/discount", verifyToken, products.addDiscount);
 productsRoutes.get(
-  "/products/discount/:userId",
+  "/products/discount/all/:userId",
   verifyToken,
   products.findAllDiscount
 );
-productsRoutes.post("/products/discount", verifyToken, products.addDiscount);
-productsRoutes.get("/products/discount/:id", verifyToken, products.addDiscount);
+productsRoutes.get(
+  "/products/discount/:id",
+  verifyToken,
+  products.findDiscount
+);
 productsRoutes.put("/products/discount", verifyToken, products.updateDiscount);
 productsRoutes.delete(
   "/products/discount/:id",

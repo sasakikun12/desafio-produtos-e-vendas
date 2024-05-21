@@ -90,7 +90,6 @@ const Modal = ({
           ...product,
           userId: userId,
         };
-
         addProduct(token, productObj)
           .then((response) => {
             const data = response.data;

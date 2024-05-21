@@ -47,6 +47,7 @@ const Home = () => {
             setList(response.data);
           })
           .catch((error) => {
+            setList([]);
             toast.error(error.response.data.message);
           });
         break;
@@ -56,6 +57,7 @@ const Home = () => {
             setList(response.data);
           })
           .catch((error) => {
+            setList([]);
             toast.error(error.response.data.message);
           });
         break;
@@ -65,6 +67,7 @@ const Home = () => {
             setList(response.data);
           })
           .catch((error) => {
+            setList([]);
             toast.error(error.response.data.message);
           });
         break;

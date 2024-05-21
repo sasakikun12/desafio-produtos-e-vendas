@@ -34,7 +34,7 @@ function addProduct(req, res) {
     userId,
   })
     .then((result) => res.json(result))
-    .catch((error) => res.status(500).json({ error: error.message }));
+    .catch((error) => res.status(500).json({ message: error.message }));
 }
 
 async function updateProduct(req, res) {
@@ -166,9 +166,13 @@ function findDiscount(req, res) {
 
 function findAllDiscount(req, res) {
   const { userId } = req.params;
-  ProductDiscountRepository.findAll({ where: { userId } }).then((result) =>
-    res.json(result)
-  );
+  ProductDiscountRepository.findAll({ where: { userId } })
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((error) => {
+      res.status(500).json({ message: "Falha ao buscar os descontos" });
+    });
 }
 
 async function updateDiscount(req, res) {

@@ -56,13 +56,15 @@ const ProductForm = ({ action, product, onProductChange }) => {
         onChange={onProductChange}
       />
 
-      <Input
-        text={"Link"}
-        type={"text"}
-        id={"link"}
-        value={product?.link || ""}
-        onChange={onProductChange}
-      />
+      {product.type === "digital" ? (
+        <Input
+          text={"Link"}
+          type={"text"}
+          id={"link"}
+          value={product?.link || ""}
+          onChange={onProductChange}
+        />
+      ) : undefined}
     </>
   );
 };

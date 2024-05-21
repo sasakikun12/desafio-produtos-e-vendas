@@ -37,43 +37,45 @@ const Login = () => {
   };
 
   return (
-    <div className="d-flex flex-row h-100 justify-content-between">
-      <StyledLogin className="d-flex align-items-center container">
-        <img src={LoginImage} className="w-100 p-5"></img>
-      </StyledLogin>
-      <StyledLogin className="d-flex flex-column justify-content-around p-5">
-        <div className="p-5 shadow mr-3 rounded">
-          <h1>Gerencie seus produtos e vendas</h1>
-          <form>
-            <Input
-              text={"Usuário"}
-              type={"text"}
-              id={"username"}
-              placeholder={"Insira seu usuário"}
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
+    <div>
+      <div className="d-flex h-100 justify-content-between">
+        <StyledLogin className="d-flex align-items-center container">
+          <img src={LoginImage} className="w-100 p-5"></img>
+        </StyledLogin>
+        <StyledLogin className="d-flex flex-column justify-content-around p-5">
+          <div className="p-5 shadow mr-3 rounded">
+            <h1>Gerencie seus produtos e vendas</h1>
+            <form>
+              <Input
+                text={"Usuário"}
+                type={"text"}
+                id={"username"}
+                placeholder={"Insira seu usuário"}
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
 
-            <Input
-              text={"Senha"}
-              type={"password"}
-              id={"password"}
-              placeholder={"Insira sua senha"}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+              <Input
+                text={"Senha"}
+                type={"password"}
+                id={"password"}
+                placeholder={"Insira sua senha"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
 
-            {error && (
-              <div className="text-center m-3 text-danger">
-                Usuário ou senha inválidos!
+              {error && (
+                <div className="text-center m-3 text-danger">
+                  Usuário ou senha inválidos!
+                </div>
+              )}
+              <div className="d-flex justify-content-center">
+                <Button onClick={handleSubmit} text={"Entrar"} />
               </div>
-            )}
-            <div className="d-flex justify-content-center">
-              <Button onClick={handleSubmit} text={"Entrar"} />
-            </div>
-          </form>
-        </div>
-      </StyledLogin>
+            </form>
+          </div>
+        </StyledLogin>
+      </div>
     </div>
   );
 };
